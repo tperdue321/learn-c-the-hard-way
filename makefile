@@ -12,4 +12,4 @@ ex7: ex7.c
 	gcc -o ex7 ex7.c
 
 clean:
-	rm -f ex1 ex3
+	rm -f ex1 ex3 ex7
