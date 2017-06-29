@@ -20,4 +20,6 @@ int main(int argc, char *argv[]) {
   printf("The size of char fullName[]: %ld\n", sizeof(fullName));
   printf("The number of chars%ld\n", sizeof(fullName) / sizeof(char));
   printf("name=\"%s\" and fullName=\"%s\"\n", name, fullName);
+
+  return 0;
 } // end main
