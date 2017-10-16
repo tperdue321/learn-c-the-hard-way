@@ -1,6 +1,19 @@
-CFLAGS=-Wall -g
+CFLAGS+=-Wall -g
+# set dynamic database size for exercise 17 based on user input for
+# make file otherwise define default constants
 
-all: ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 ex13 ex14 ex15 ex16
+# TODO alert user that default values are being used and inform
+# them how to set dynamic database size if they desire
+DEFAULT_MAX_ROWS = -DMAX_ROWS=100
+DEFAULT_MAX_DATA = -DMAX_DATA=512
+ifeq ($(MAX_ROWS),)
+	MAX_ROWS := $(DEFAULT_MAX_ROWS)
+endif
+ifeq ($(MAX_DATA),)
+	MAX_DATA := $(DEFAULT_MAX_DATA) 
+endif
+
+all: ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 ex13 ex14 ex15 ex16 ex17
 
 ex1: ex1.c
 	gcc -o ex1 ex1.c
@@ -39,5 +52,10 @@ ex16: ex16.c
 	gcc -o ex16 ex16.c
 
 
+# DYNAMICALLY SET ROWS AND DATA ALLOWED AT COMPILATION
+ex17: ex17.c
+	gcc $(MAX_ROWS) $(MAX_DATA) -o ex17 ex17.c
+
+
 clean:
-	rm -f ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 ex13 ex14 ex15 ex16
+	rm -f ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 ex13 ex14 ex15 ex16 ex17
