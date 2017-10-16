@@ -4,8 +4,6 @@
 #include <errno.h>
 #include <string.h>
 
-#define MAX_DATA 512
-#define MAX_ROWS 100
 #define NUM_OF_DB 1
 #define TRUE 1
 #define FALSE 0
