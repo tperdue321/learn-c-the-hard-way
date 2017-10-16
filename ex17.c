@@ -33,7 +33,7 @@ void address_print(struct Address *addr) {
 }
 
 void database_load(struct Connection *conn) {
-  int rc = fread(conn->db, sizeof(struct Address) * MAX_ROWS, NUM_OF_DB, conn->file);
+  int rc = fread(conn->db->rows, sizeof(conn->db->rows[0]) * MAX_ROWS, NUM_OF_DB, conn->file);
   if (rc != 1)
     die("failed to load database", conn);
 }
@@ -50,15 +50,11 @@ struct Connection * database_open(const char *filename, char mode) {
 
 
   if(mode == 'c') {
-    printf("opening file %s\n", filename);
-    printf("size of db %lu\n", sizeof(*conn->db->rows) * MAX_ROWS);
-    printf("size of address %lu\n", sizeof(conn->db->rows[0]));
     conn->file = fopen(filename, "w");
   } else {
     conn->file = fopen(filename, "r+");
 
     if(conn->file)
-      printf("about to load file\n");
       database_load(conn);
   } // end if/else
 
@@ -104,15 +100,7 @@ void database_create(struct Connection *conn) {
 
 void database_set(struct Connection *conn, int id,
                   const char *name, const char *email) {
-  printf("setting\n");
   struct Address *addr = &conn->db->rows[id];
-  // *************************** DEBUGGING ************************* //
-  printf("%d\n", sizeof(addr));
-  printf("%d\n", sizeof(*addr));
-  printf("%d\n", (*addr).id);
-  // printf("%d\n", addr);
-  // printf("%d\n", (*addr).set);
-  // *************************** DEBUGGING ************************* //
   if(addr->set)
     die("Already set, delete it first", conn);
 
@@ -130,7 +118,7 @@ void database_set(struct Connection *conn, int id,
 } // end database_set // rename to set_addr
 
 void database_get(struct Connection *conn, int id) {
-  struct Address *addr = &conn->db->rows[id]; // &conn->db == &(*conn).db &conn->db->rows[id] == &(*conn).(*db).rows[id] ???
+  struct Address *addr = &conn->db->rows[id]; 
 
   if(addr->set)
     address_print(addr);
@@ -165,26 +153,14 @@ void die(const char *message, struct Connection *conn) {
 
 int main (int argc, char* argv[]) {
 
-  // const int MAX_ROWS = atoi(argv[3]);
-  // const int MAX_DATA = atoi(argv[4]);
-  // printf("%d\n", MAX_ROWS);
-  // printf("%d\n", MAX_DATA);
-  // printf("%d\n", sizeof(struct Address));
-  // printf("%d\n", sizeof(struct Connection));
-  // struct Connection *conn2 = malloc(sizeof(struct Connection) + MAX_ROWS * sizeof(struct Address));
-  // printf("%d\n", sizeof(struct Connection) + MAX_ROWS * sizeof(struct Address));
-  // printf("%d\n", sizeof(*conn2));
-
-  // printf("%d\n", sizeof(struct Connection));
   if(argc < 3)
-    die("Useage: ex17 <dbfile> <action> [action params] [MAX_ROWS] [MAX_DATA]", NULL);
+    die("Useage: ex17 <dbfile> <action> [action params]\n \
+        valid actions: c=create, g=get, s=set, d=del, l=list\n", NULL);
 
   char *filename = argv[1]; // get filename from command line
   char action = argv[2][0]; // get user decided action from command line
   // open a new connection
   struct Connection *conn = database_open(filename, action);
-  // printf("size of connection %d\n", sizeof(*conn));
-  // printf("size of db %d\n", sizeof(conn->db->rows));
   int id = 0;
 
   if(argc > 3)
