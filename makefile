@@ -13,7 +13,8 @@ ifeq ($(MAX_DATA),)
 	MAX_DATA := $(DEFAULT_MAX_DATA) 
 endif
 
-all: ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 ex13 ex14 ex15 ex16 ex17
+all: 	ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 \
+			ex13 ex14 ex15 ex16 ex17 ex18
 
 ex1: ex1.c
 	gcc -o ex1 ex1.c
@@ -56,6 +57,9 @@ ex16: ex16.c
 ex17: ex17.c
 	gcc $(MAX_ROWS) $(MAX_DATA) -o ex17 ex17.c
 
+ex18: ex18.c
+	gcc -o ex18 ex18.c
 
 clean:
-	rm -f ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 ex13 ex14 ex15 ex16 ex17
+	rm -f ex1 ex3 ex7 ex8 ex9 ex10 ex11 ex12 \
+				ex13 ex14 ex15 ex16 ex17 ex18
